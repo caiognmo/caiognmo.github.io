@@ -1,0 +1,111 @@
+.back-button {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    background-color: #ffa500;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+  }
+  
+  .back-button:hover {
+    background-color: #ff8c00;
+  }
+  
+  .back-button i {
+    font-size: 24px;
+    color: white;
+  }
+  
+  body {
+    background-image: url(../img/login-bg.png);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    position: relative;
+  }
+  
+  .container {
+    background: rgba(0, 0, 0, 0.8);
+    /* Preto com 80% de opacidade */
+    padding: 25px;
+    border-radius: 10px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-family: 'Raleway';
+    font-size: 30px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    /* Transparência para a div */
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .logo span {
+    color: #ffa500;
+    /* Cor em evidência da página para W e C */
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    text-align: left;
+  }
+  
+  input:focus {
+    border: 2px solid #ffa500;
+  }
+  
+  .btn {
+    background: #ffa500;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .btn:hover {
+    background: #ff8c00;
+  }
+  
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: -5px;
+    display: none;
+  }

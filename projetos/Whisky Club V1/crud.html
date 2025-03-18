@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whisky Club - Gestão de Kits</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+            background-color: #1b1b1b;
+        }
+
+        .cabecalho {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ffa500;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .cabecalho h2 {
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        .cabecalho .cliente-cabecalho {
+            font-size: 2.5em;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 120px auto 20px;
+            background: #2c2c2c;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 165, 0, 0.5);
+            z-index: 5;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input, select, .btn {
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            border: none;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .btn {
+            background-color: #ffa500;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #ff8c00;
+        }
+
+        .kit-item {
+            background: #444;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            text-align: left;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit { color: #ffa500; cursor: pointer; }
+        .delete { color: #ff4500; cursor: pointer; }
+
+        .btn-flutuante {
+            position: fixed;
+            bottom: 20px;
+            padding: 15px;
+            background-color: #ffa500;
+            color: black;
+            font-weight: bold;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 0 10px rgba(255, 165, 0, 0.7);
+        }
+
+        .btn-flutuante:hover {
+            background-color: #ff8c00;
+        }
+
+        .voltar { left: 20px; }
+        .avancar { right: 20px; }
+
+        /* Customização dos textos da lista */
+        .tipo {
+            color: #ffa500; /* Cor principal */
+            font-weight: bold;
+        }
+
+        .legenda {
+            color: #ffa500;
+            font-weight: bold;
+        }
+
+        .frequencia {
+            font-weight: bold;
+            color: #ffa500;
+        }
+
+        .kit-item span {
+            color: white;
+        }
+
+        .kit-item .frequencia {
+            font-weight: bold;
+            color: #ffa500;
+        }
+
+        /* Estilo do item de listagem */
+        .kit-item span .tipo {
+            color: #ffa500; /* Cor principal também no item da listagem */
+        }
+    </style>
+</head>
+<body>
+    <div class="cabecalho">
+        <div class="cliente-cabecalho">
+            Bem-vindo, <span id="clienteNome">Cliente</span>!
+        </div>
+        <h2>Gestão de Kits</h2>
+    </div>
+
+    <div class="container">
+        <div class="input-group">
+            <label for="kitSelect">Selecione o Tipo de Whisky</label>
+            <select id="kitSelect" onchange="mostrarCampoOutro()">
+                <option value="Whisky Escocês">Whisky Escocês</option>
+                <option value="Whisky Irlandês">Whisky Irlandês</option>
+                <option value="Whisky Bourbon">Whisky Bourbon</option>
+                <option value="Whisky Japonês">Whisky Japonês</option>
+                <option value="Outro">Outro</option>
+            </select>
+            <input type="text" id="outroInput" placeholder="Digite o tipo de whisky" style="display: none;">
+            
+            <label for="kitInput">Personalização do Seu Kit</label>
+            <input type="text" id="kitInput" placeholder="Personalização opcional">
+            
+            <label for="frequenciaInput">Frequência de Entrega</label>
+            <select id="frequenciaInput">
+                <option value="Semanal">Semanal</option>
+                <option value="Quinzenal">Quinzenal</option>
+                <option value="Mensal">Mensal</option>
+            </select>
+            
+            <button class="btn" onclick="adicionarKit()">Cadastrar</button>
+        </div>
+        <div id="lista"></div>
+    </div>
+
+    <button class="btn-flutuante voltar" onclick="voltarPagina()">⬅</button>
+    <button class="btn-flutuante avancar" onclick="avancarPagina()">➡</button>
+
+    <script>
+        let kits = [];
+
+        function mostrarCampoOutro() {
+            const kitSelect = document.getElementById('kitSelect');
+            const outroInput = document.getElementById('outroInput');
+            if (kitSelect.value === 'Outro') {
+                outroInput.style.display = 'block';
+            } else {
+                outroInput.style.display = 'none';
+            }
+        }
+
+        function adicionarKit() {
+            const tipo = document.getElementById('kitSelect').value;
+            const outroTipo = document.getElementById('outroInput').value;
+            const legenda = document.getElementById('kitInput').value;
+            const frequencia = document.getElementById('frequenciaInput').value;
+
+            if (tipo === 'Outro' && outroTipo.trim() === '') {
+                alert("Por favor, insira o tipo de whisky.");
+                return;
+            }
+
+            const novoKit = {
+                tipo: tipo === 'Outro' ? outroTipo : tipo,
+                legenda: legenda.trim() || 'Sem personalização',
+                frequencia: frequencia
+            };
+
+            kits.push(novoKit);
+            renderizarLista();
+        }
+
+        function renderizarLista() {
+            let lista = document.getElementById('lista');
+            lista.innerHTML = '';
+            kits.forEach((kit, index) => {
+                let div = document.createElement("div");
+                div.classList.add("kit-item");
+                div.innerHTML = `<span><span class="tipo">${kit.tipo}</span><br><strong class="legenda">Personalização:</strong> ${kit.legenda}<br><strong class="frequencia">Entrega:</strong> ${kit.frequencia}</span>
+                    <div class="actions">
+                        <span class="edit" onclick="editarKit(${index})">✏️</span>
+                        <span class="delete" onclick="excluirKit(${index})">🗑️</span>
+                    </div>`;
+                lista.appendChild(div);
+            });
+        }
+
+        function editarKit(index) {
+            let novoTipo = prompt("Edite o tipo do kit:", kits[index].tipo);
+            let novaLegenda = prompt("Edite a personalização (opcional):", kits[index].legenda);
+            let novaFrequencia = prompt("Edite a frequência de entrega:", kits[index].frequencia);
+            if (novoTipo !== null) kits[index].tipo = novoTipo;
+            if (novaLegenda !== null) kits[index].legenda = novaLegenda;
+            if (novaFrequencia !== null) kits[index].frequencia = novaFrequencia;
+            renderizarLista();
+        }
+
+        function excluirKit(index) {
+            kits.splice(index, 1);
+            renderizarLista();
+        }
+
+        function voltarPagina() {
+            alert('Você clicou em voltar.');
+        }
+
+        function avancarPagina() {
+            alert('Você clicou em avançar.');
+        }
+
+        // Adiciona o evento de pressionamento da tecla Enter
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                adicionarKit(); // Chama a função de cadastro ao pressionar Enter
+            }
+        });
+    </script>
+</body>
+</html>
